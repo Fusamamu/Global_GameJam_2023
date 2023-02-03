@@ -1,0 +1,34 @@
+{
+    "name": "GameplayInput",
+    "maps": [
+        {
+            "name": "Dice",
+            "id": "bd1039a3-4bbf-4c17-a922-21f2ebf2d017",
+            "actions": [
+                {
+                    "name": "RollDice",
+                    "type": "Button",
+                    "id": "50c66019-6da8-463c-8888-cec02782c3d3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c227ada3-8a21-44ac-9369-91285a840058",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RollDice",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
