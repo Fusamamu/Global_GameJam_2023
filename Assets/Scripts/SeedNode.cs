@@ -14,6 +14,8 @@ namespace GlobalGameJam
     
     public class SeedNode : GridNode
     {
+        public bool Growing;
+        
         public bool IsInit;
         
         [SerializeField] private SeedNode SeedNodePrefab;
@@ -35,6 +37,7 @@ namespace GlobalGameJam
 
         public void StartGrow()
         {
+            Growing = true;
             StartCoroutine(Grow());
         }
         
@@ -55,6 +58,8 @@ namespace GlobalGameJam
                         {
                             _plantNode.Initialized();
                             _plantNode.StartGrow();
+                            
+                            ServiceLocator.Instance.Get<AudioManager>().OnPlantConnectedSound.Play();
 
                             if (ServiceLocator.Instance.Get<GridDataManager>().IsAllPlantNodesGrown())
                             {
@@ -64,7 +69,7 @@ namespace GlobalGameJam
                     }
                 }
                 
-                var _newEdge = Instantiate(EdgePrefab, GridPos, Quaternion.identity);
+                var _newEdge = Instantiate(EdgePrefab, GridPos, Quaternion.identity, GridNodeData.transform);
 
                 _newEdge.Initialized();
                 
@@ -79,8 +84,12 @@ namespace GlobalGameJam
                 _newSeedNode.PlayFeedback();
                 _index++;
                 
+                ServiceLocator.Instance.Get<AudioManager>().GrowingNodeSound.Play();
+                
                 yield return new WaitForSeconds(1);
             }
+
+            Growing = false;
         }
 
         //need to use base function

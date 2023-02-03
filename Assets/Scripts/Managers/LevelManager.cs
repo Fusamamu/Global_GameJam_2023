@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using FSM;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace GlobalGameJam
@@ -12,8 +13,14 @@ namespace GlobalGameJam
         public string Detail;
         
         public int DiceCount;
-        public List<SeedNode> SeedNodes;
 
+        public List<Seeds> SeedBatch;
+    }
+
+    [Serializable]
+    public struct Seeds
+    {
+        public List<SeedNode> SeedNodes;
     }
     
     public class LevelManager : MonoBehaviour, IService
@@ -23,8 +30,29 @@ namespace GlobalGameJam
         public bool Use;
 
         public int CurrentLevel = 0;
+        public int CurrentBatch;
 
         public List<LevelInfo> LevelInfos = new List<LevelInfo>();
+
+        public Seeds GetSeeds()
+        {
+            return 
+                LevelInfos[CurrentLevel]
+                .SeedBatch[CurrentBatch];
+        }
+        
+        public int BatchCount()
+        {
+            return  LevelInfos[CurrentLevel]
+                .SeedBatch.Count;
+        }
+
+        public int SeedCount()
+        {
+            return LevelInfos[CurrentLevel]
+                .SeedBatch[CurrentBatch]
+                .SeedNodes.Count;
+        }
 
         public StateMachine LevelStateMachine;
 
@@ -96,32 +124,31 @@ namespace GlobalGameJam
             LevelStateMachine.AddState(GetSeedState, 
                 new State(onEnter: _state =>
                 {
-                    ServiceLocator.Instance.Get<UIManager>().GetUI<LevelUI>().PressSpaceBarUI.SetActive(true);
+                    if(!UIManager.GetUI<SeedSelectionUI>().IsShow)
+                        UIManager.GetUI<LevelUI>().PressSpaceBarUI.SetActive(true);
                     
                     DiceManager.Enable();
                     DiceManager.OnDiceStopRolling += UIManager.GetUI<SeedSelectionUI>().Show;
 
-                    Dice.OnDiceSelected += GoToPlaceSeedState;
+                    Dice.OnDiceSelected += OnDiceSelectedHandler;
 
                 }, onLogic: _state =>
                 {
                     Debug.Log("Get Seed State");
+                    
                 },onExit: _state =>
                 {
-                    UIManager.GetUI<SeedSelectionUI>().Hide();
-                    
                     DiceManager.Disable();
                     DiceManager.OnDiceStopRolling -= UIManager.GetUI<SeedSelectionUI>().Show;
                     
-                    Dice.OnDiceSelected -= GoToPlaceSeedState;
+                    Dice.OnDiceSelected -= OnDiceSelectedHandler;
                 }));
           
             LevelStateMachine.AddState(PlaceSeedState, 
                 new State(onEnter: _state =>
                 {
                     SeedPlacementManager.Enable();
-                    SeedPlacementManager.OnSeedPlaced += UIManager.GetUI<SeedSelectionUI>().Hide;
-                    SeedPlacementManager.OnSeedPlaced += GoToGetSeedState;
+                    SeedPlacementManager.OnSeedPlaced += OnSeedPlacementHandler;
 
                     SeedNode.OnAllPlantGrown += GoToLevelPassState;
 
@@ -133,8 +160,7 @@ namespace GlobalGameJam
                 },onExit: _state =>
                 {
                     SeedPlacementManager.Disable();
-                    SeedPlacementManager.OnSeedPlaced -= UIManager.GetUI<SeedSelectionUI>().Hide;
-                    SeedPlacementManager.OnSeedPlaced -= GoToGetSeedState;
+                    SeedPlacementManager.OnSeedPlaced -= OnSeedPlacementHandler;
                     
                     SeedNode.OnAllPlantGrown -= GoToLevelPassState;
                 }));
@@ -199,6 +225,48 @@ namespace GlobalGameJam
                 LevelStateMachine.SetStartState(TutorialState);
             
             LevelStateMachine.Init();
+        }
+
+        private void OnDiceSelectedHandler()
+        {
+            if(DiceManager.AllDicesSelected())
+                UIManager.GetUI<SeedSelectionUI>().Hide();
+            
+            GoToPlaceSeedState();
+        }
+
+        private void OnSeedPlacementHandler()
+        {
+            StartCoroutine(CheckStopGrow(() =>
+            {
+                GoToGetSeedState();
+            }));
+        }
+
+        private IEnumerator CheckStopGrow(Action _onComplete)
+        {
+            bool _stopGrow = false;
+            
+            var _allSeeds = FindObjectsOfType<SeedNode>();
+            
+            while (!_stopGrow)
+            {
+                foreach (var _seed in _allSeeds)
+                {
+                    if (_seed.Growing)
+                    {
+                        _stopGrow = false;
+                    }
+                    else
+                    {
+                        _stopGrow = true;
+                    }
+
+                    yield return null;
+                }
+            }
+            
+            _onComplete?.Invoke();
         }
 
         private void GoToPlaceSeedState()

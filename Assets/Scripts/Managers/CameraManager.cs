@@ -84,12 +84,16 @@ namespace GlobalGameJam
         {
             if(RotateCW.IsPlaying) return;
             RotateCW.PlayFeedbacks();
+            
+            ServiceLocator.Instance.Get<AudioManager>().OnCameraRotateSound.Play();
         }
         
         private void QuickRotateCCW(InputAction.CallbackContext _context)
         {
             if(RotateCCW.IsPlaying) return;
             RotateCCW.PlayFeedbacks();
+            
+            ServiceLocator.Instance.Get<AudioManager>().OnCameraRotateSound.Play();
         }
     }
 }

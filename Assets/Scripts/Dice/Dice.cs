@@ -13,6 +13,8 @@ namespace GlobalGameJam
     {
         public bool IsInit { get; private set; }
 
+        public bool IsSelected;
+
         public SeedNode SeedNodePrefab;
 
         public float CoolDown;
@@ -30,6 +32,7 @@ namespace GlobalGameJam
         [field: SerializeField] public ColliderController ColliderController { get; private set; }
         
         [SerializeField] private CameraManager CameraManager;
+        [SerializeField] private UIManager UIManager;
 
         private IObjectPool<Dice> pool;
 
@@ -50,6 +53,7 @@ namespace GlobalGameJam
             IsInit = true;
             
             CameraManager = ServiceLocator.Instance.Get<CameraManager>();
+            UIManager     = ServiceLocator.Instance.Get<UIManager>();
             
             OnSelectedFeedback.Events.OnComplete.AddListener(() =>
             {
@@ -127,6 +131,8 @@ namespace GlobalGameJam
             transform.position = _targetPos;
 
             ColliderController.EnableCollider();
+            
+            ServiceLocator.Instance.Get<AudioManager>().OnDiceSnapToPosSound.Play();
         }
 
         public void OnSelected()
@@ -134,6 +140,10 @@ namespace GlobalGameJam
             ColliderController.DisableCollider();
             ColliderController.DisableRigidBody();
             OnSelectedFeedback.PlayFeedbacks();
+
+            IsSelected = true;
+            
+            ServiceLocator.Instance.Get<AudioManager>().OnDiceSelectedSound.Play();
          
             OnDiceSelected?.Invoke();
         }
@@ -150,6 +160,10 @@ namespace GlobalGameJam
             
             OnFocusFeedback.Direction = MMFeedbacks.Directions.TopToBottom;
             OnFocusFeedback.PlayFeedbacks();
+            
+            UIManager.GetUI<ToolTipUI>().Show(this);
+            
+            ServiceLocator.Instance.Get<AudioManager>().OnDiceFocusSound.Play();
         }
 
         public void OnLostFocus()
@@ -163,6 +177,8 @@ namespace GlobalGameJam
             OnFocusFeedback.PlayFeedbacksInReverse();
             
             CoolDown = 0.16f;
+            
+            UIManager.GetUI<ToolTipUI>().Hide();
         }
 
         private void Update()

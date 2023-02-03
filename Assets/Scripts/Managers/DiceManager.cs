@@ -28,16 +28,32 @@ namespace GlobalGameJam
         [SerializeField] private float MaxRollTimer;
         [SerializeField] private float RollTimer;
 
+        [ReadOnly, SerializeField] private LevelManager LevelManager;
         [ReadOnly, SerializeField] private DiceSelection      DiceSelection;
         [ReadOnly, SerializeField] private DiceScreenPosition DiceScreenPosition;
         [ReadOnly, SerializeField] private InputManager InputManager;
 
         public event Action OnDiceStopRolling = delegate { };
 
+        public bool AllDicesSelected()
+        {
+            foreach (var _dice in Dices)
+            {
+                if (_dice == null) continue;
+
+                if (!_dice.IsSelected)
+                    return false;
+            }
+
+            return true;
+        }
+
         public void Initialized()
         {
             dicePool = new ObjectPool<Dice>(OnDiceCreated, OnGetDice, OnDiceReleased, OnDiceDestroyed);
 
+            LevelManager = ServiceLocator.Instance.Get<LevelManager>();
+            
             InputManager = ServiceLocator.Instance.Get<InputManager>();
 
             InputManager.GameplayInput.Dice.RollDice.performed -= RollDice;
@@ -55,6 +71,8 @@ namespace GlobalGameJam
                 .CreateDices()
                 .StartRollDice()
                 .Disable();
+
+            LevelManager.CurrentBatch++;
         }
 
         public DiceManager Enable()
@@ -99,7 +117,7 @@ namespace GlobalGameJam
 
         public DiceManager CreateDices()
         {
-            CreateDices(DiceMaxCount);
+            CreateDices(LevelManager.SeedCount());
             return this;
         }
 
@@ -116,6 +134,10 @@ namespace GlobalGameJam
                     _dice.ColliderController
                         .EnableCollider()
                         .EnableRigidBody();
+
+                    _dice.IsSelected = false;
+
+                    _dice.SeedNodePrefab = LevelManager.GetSeeds().SeedNodes[_i];
                     
                     Dices.Add(_dice);
                 }

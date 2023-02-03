@@ -77,6 +77,8 @@ namespace GlobalGameJam
 					PlacementHolder.SetActive(false);
 
 					Disable();
+
+					ServiceLocator.Instance.Get<AudioManager>().PlacingSound.Play();
 					
 					OnSeedPlaced?.Invoke();
 				}

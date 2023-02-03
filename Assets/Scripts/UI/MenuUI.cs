@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using MPUIKIT;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GlobalGameJam
 {
@@ -15,6 +16,9 @@ namespace GlobalGameJam
 
 		[SerializeField] private MPImage TransitionImage;
 
+		public Slider BGMSlider;
+		public Slider SFXSlider;
+		
 		[SerializeField] private MMF_Player ShowFeedback;
 		[SerializeField] private MMF_Player HideFeedback;
         

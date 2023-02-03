@@ -39,7 +39,7 @@ namespace GlobalGameJam
             
             while (_index < Seeds.Count)
             {
-                var _newEdge = Instantiate(EdgePrefab, GridPos, Quaternion.identity);
+                var _newEdge = Instantiate(EdgePrefab, GridPos, Quaternion.identity, GridNodeData.transform);
 
                 _newEdge.Initialized();
                 
@@ -53,6 +53,8 @@ namespace GlobalGameJam
 
                 _newSeedNode.PlayFeedback();
                 _index++;
+
+                ServiceLocator.Instance.Get<AudioManager>().GrowingTreeSound.Play();
                 
                 yield return new WaitForSeconds(1);
             }

@@ -7,6 +7,7 @@ namespace GlobalGameJam
 {
     public class ProjectManager : MonoBehaviour
     {
+        [SerializeField] private AudioManager         AudioManager;
         [SerializeField] private DataManager          DataManager;
         [SerializeField] private InputManager         InputManager;
         [SerializeField] private CameraManager        CameraManager;
@@ -25,6 +26,7 @@ namespace GlobalGameJam
             ServiceLocator.Instance.Register(InputManager);
             ServiceLocator.Instance.Register(CameraManager);
             ServiceLocator.Instance.Register(UIManager);
+            ServiceLocator.Instance.Register(AudioManager);
             ServiceLocator.Instance.Register(GizmosManager);
             ServiceLocator.Instance.Register(FeedbackManager);
             ServiceLocator.Instance.Register(DiceManager);
@@ -35,5 +37,6 @@ namespace GlobalGameJam
             
             ServiceLocator.Instance.Initialized();
         }
+        
     }
 }

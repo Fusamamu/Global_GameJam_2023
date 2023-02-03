@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using MPUIKIT;
+using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
 namespace GlobalGameJam
 {
 	public class SeedSelectionUI : MonoBehaviour, IGameUI
 	{
+		public bool IsShow;
+		
 		[field: SerializeField] public bool IsInit { get; private set; }
         
 		[field: SerializeField] public Canvas UICanvas { get; private set; }
@@ -33,6 +36,8 @@ namespace GlobalGameJam
 			
 			ShowFeedback.Direction = MMFeedbacks.Directions.TopToBottom;
 			ShowFeedback.PlayFeedbacks();
+
+			IsShow = true;
 		}
         
 		public void Hide()
@@ -41,6 +46,8 @@ namespace GlobalGameJam
 			
 			HideFeedback.Direction = MMFeedbacks.Directions.TopToBottom;
 			HideFeedback.PlayFeedbacks();
+
+			IsShow = false;
 		}
 	}
 }
