@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
@@ -30,10 +31,10 @@ namespace GlobalGameJam
             
             cameraInput.MainCamera.Enable();
 
-            cameraInput.MainCamera.MoveLeft .performed += MoveLeft;
-            cameraInput.MainCamera.MoveRight.performed += MoveRight;
-            cameraInput.MainCamera.MoveUp   .performed += MoveUp;
-            cameraInput.MainCamera.MoveDown .performed += MoveDown;
+            // cameraInput.MainCamera.MoveLeft .performed += MoveLeft;
+            // cameraInput.MainCamera.MoveRight.performed += MoveRight;
+            // cameraInput.MainCamera.MoveUp   .performed += MoveUp;
+            // cameraInput.MainCamera.MoveDown .performed += MoveDown;
 
             cameraInput.MainCamera.QuickRotateCW .performed += QuickRotateCW;
             cameraInput.MainCamera.QuickRotateCCW.performed += QuickRotateCCW;
@@ -47,7 +48,7 @@ namespace GlobalGameJam
         public void ChangeBackgroundColor()
         {
             var _currentColor = MainCamera.backgroundColor;
-            var _newColor = BackgroundColors[ServiceLocator.Instance.Get<LevelManager>().CurrentLevel];
+            var _newColor = BackgroundColors[LevelManager.CurrentLevel];
 
             MMF_Property _property = OnChangeBackgroundColor.GetFeedbackOfType<MMF_Property>();
             _property.Target.ColorRemapZero = _currentColor;
@@ -94,6 +95,12 @@ namespace GlobalGameJam
             RotateCCW.PlayFeedbacks();
             
             ServiceLocator.Instance.Get<AudioManager>().OnCameraRotateSound.Play();
+        }
+
+        private void OnDestroy()
+        {
+            cameraInput.MainCamera.QuickRotateCW .performed -= QuickRotateCW;
+            cameraInput.MainCamera.QuickRotateCCW.performed -= QuickRotateCCW;
         }
     }
 }

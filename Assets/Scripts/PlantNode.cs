@@ -52,7 +52,8 @@ namespace GlobalGameJam
 
                 _newSeedNode.PlayFeedback();
                 _index++;
-
+                
+                ServiceLocator.Instance.Get<DataManager>().IncreaseScore(10);
                 ServiceLocator.Instance.Get<AudioManager>().GrowingTreeSound.Play();
                 
                 yield return new WaitForSeconds(1);

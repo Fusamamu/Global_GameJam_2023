@@ -137,8 +137,6 @@ namespace GlobalGameJam
 
         public void OnUnableToSelect()
         {
-            ColliderController.DisableCollider();
-            ColliderController.DisableRigidBody();
             OnFocusFeedback.PlayFeedbacks();
             
             ServiceLocator.Instance.Get<AudioManager>().OnDiceUnableToSelectSound.Play();

@@ -10,7 +10,7 @@ namespace GlobalGameJam
     {
         [field: SerializeField] public bool IsInit { get; private set; }
 
-        public GridNodeData CurrentGridLevel => GridLevels[ServiceLocator.Instance.Get<LevelManager>().CurrentLevel];
+        public GridNodeData CurrentGridLevel => GridLevels[LevelManager.CurrentLevel];
 
         public List<GridNodeData> GridLevels = new List<GridNodeData>();
 
@@ -38,6 +38,51 @@ namespace GlobalGameJam
             CurrentGridLevel.gameObject.SetActive(true);
         }
 
+        public void StartLevel(int _level, Action _onCompleted = null)
+        {
+            StartCoroutine(StartLevelCoroutine(_level, _onCompleted));
+        }
+
+        public IEnumerator StartLevelCoroutine(int _level, Action _onCompleted = null)
+        {
+            var _t = 0f;
+            
+            var _startPos  = CurrentGridLevel.transform.position;
+            var _targetPos = new Vector3(0, -50, 0);
+
+            while (_t < 1f)
+            {
+                _t += Time.deltaTime * LevelChangeSpeed;
+
+                CurrentGridLevel.transform.position = Vector3.Lerp(_startPos, _targetPos, _t);
+
+                yield return null;
+            }
+            
+            CurrentGridLevel.gameObject.SetActive(false);
+
+            LevelManager.CurrentLevel = _level;
+
+            CurrentGridLevel.gameObject.SetActive(true);
+            CurrentGridLevel.transform.position = new Vector3(0, -50, 0);
+            
+            var _nextLevelStartPos  = CurrentGridLevel.transform.position;
+            var _nextLevelTargetPos = new Vector3(0, 0, 0);
+
+            _t = 0f;
+
+            while (_t < 1f)
+            {
+                _t += Time.deltaTime * LevelChangeSpeed;
+
+                CurrentGridLevel.transform.position = Vector3.Lerp(_nextLevelStartPos, _nextLevelTargetPos, _t);
+
+                yield return null;
+            }
+            
+            _onCompleted?.Invoke();
+        }
+
         public void StartChangeNextLevel(Action _onCompleted = null)
         {
             StartCoroutine(ChangeNextLevel(_onCompleted));
@@ -61,8 +106,7 @@ namespace GlobalGameJam
             
             CurrentGridLevel.gameObject.SetActive(false);
 
-            //not good
-            ServiceLocator.Instance.Get<LevelManager>().CurrentLevel++;
+            LevelManager.CurrentLevel++;
 
             CurrentGridLevel.gameObject.SetActive(true);
             CurrentGridLevel.transform.position = new Vector3(0, -50, 0);

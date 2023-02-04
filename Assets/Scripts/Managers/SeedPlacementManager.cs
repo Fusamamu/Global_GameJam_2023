@@ -23,7 +23,7 @@ namespace GlobalGameJam
 		[SerializeField] private GameObject PlacementHolder;
 		[SerializeField] private GameObject PlacementHolderPrefab;
 
-		public event Action OnSeedPlaced = delegate { };
+		public event Action<SeedNode> OnSeedPlaced = delegate { };
         
 		public void Initialized()
 		{
@@ -72,15 +72,15 @@ namespace GlobalGameJam
 
 					GrabbedSeedNode.Initialized();
 					GrabbedSeedNode.StartGrow();
+					
+					OnSeedPlaced?.Invoke(GrabbedSeedNode);
+					
 					GrabbedSeedNode = null;
-
 					PlacementHolder.SetActive(false);
-
 					Disable();
 
 					ServiceLocator.Instance.Get<AudioManager>().PlacingSound.Play();
-					
-					OnSeedPlaced?.Invoke();
+
 				}
 			}
 		}

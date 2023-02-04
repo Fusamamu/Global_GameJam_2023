@@ -82,6 +82,8 @@ namespace GlobalGameJam
                     {
                         _eachDice.OnLostFocus();
                     }
+
+                    CurrentFocusDice = null;
                 }
             }
             else
@@ -90,6 +92,8 @@ namespace GlobalGameJam
                 {
                     _eachDice.OnLostFocus();
                 }
+
+                CurrentFocusDice = null;
             }
         }
 

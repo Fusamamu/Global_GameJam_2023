@@ -12,10 +12,15 @@ namespace GlobalGameJam
 	{
 		[field: SerializeField] public bool IsInit { get; private set; }
 
+		public TextMeshProUGUI DiceCountText;
+		
 		public GameObject PressSpaceBarUI;
 
 		public TextMeshProUGUI LevelText;
 		public TextMeshProUGUI DetailText;
+
+		public TextMeshProUGUI LevelMessage;
+		public GameObject      RestartLevelButton;
         
 		[field: SerializeField] public Canvas UICanvas { get; private set; }
 
@@ -31,6 +36,8 @@ namespace GlobalGameJam
 			if(IsInit) return;
 			IsInit = true;
 			
+			LevelMessage.gameObject.SetActive(false);
+			RestartLevelButton.SetActive(false);
 		}
 
 		public LevelUI SetLevelText(int _level)

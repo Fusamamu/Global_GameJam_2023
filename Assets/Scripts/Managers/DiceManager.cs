@@ -63,8 +63,21 @@ namespace GlobalGameJam
         public void RollDice(InputAction.CallbackContext _context)
         {
             if(!IsEnable) return;
+
+            LevelManager.CurrentBatchCount--;
             
-            ServiceLocator.Instance.Get<UIManager>().GetUI<LevelUI>().PressSpaceBarUI.SetActive(false);
+            Debug.Log("Reduce Batch");
+
+            ServiceLocator.Instance
+                .Get<UIManager>()
+                .GetUI<LevelUI>()
+                .DiceCountText
+                .SetText(LevelManager.CurrentBatchCount.ToString());
+            
+            ServiceLocator.Instance
+                .Get<UIManager>()
+                .GetUI<LevelUI>()
+                .PressSpaceBarUI.SetActive(false);
 
             SetDiceCount(1)
                 .ClearDices()
@@ -193,6 +206,19 @@ namespace GlobalGameJam
                 
                 OnDiceStopRolling?.Invoke();
             }
+        }
+
+        public bool IsAllDicesSelected()
+        {
+            foreach (var _dice in Dices)
+            {
+                if(_dice == null) continue;
+
+                if (!_dice.IsSelected)
+                    return false;
+            }
+
+            return true;
         }
 
         public bool IsAllDicesStopRolling()

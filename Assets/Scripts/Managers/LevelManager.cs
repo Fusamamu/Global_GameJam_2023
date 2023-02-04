@@ -29,8 +29,10 @@ namespace GlobalGameJam
         
         public bool Use;
 
-        public int CurrentLevel = 0;
+        public static int CurrentLevel = 0;
+        
         public int CurrentBatch;
+        public int CurrentBatchCount;
 
         public List<LevelInfo> LevelInfos = new List<LevelInfo>();
 
@@ -81,8 +83,6 @@ namespace GlobalGameJam
             LevelStateMachine.AddState(TutorialState, 
                 new State(onEnter: _state =>
                 {
-                    //ServiceLocator.Instance.Get<UIManager>().CloseAllUI();
-
                     StartCoroutine(StartTutorial());
 
                 }, onLogic: _state =>
@@ -93,10 +93,40 @@ namespace GlobalGameJam
                     
                 }));
             
-            
             LevelStateMachine.AddState(PlayerState, 
                 new State(onEnter: _state =>
                 {
+                    if (SceneLoader.IsRestartCurrentLevel)
+                    {
+                        SceneLoader.IsRestartCurrentLevel = false;
+                        
+                        ServiceLocator.Instance.Get<GridDataManager>().StartLevel(CurrentLevel, () =>
+                        {
+                            var _uiManage = ServiceLocator.Instance.Get<UIManager>();
+                        
+                            _uiManage.GetUI<LevelUI>()
+                                .SetLevelText(CurrentLevel)
+                                .SetDetailText("Let's start slow")
+                                .Show();
+
+                            CurrentBatch      = 0;
+                            CurrentBatchCount = BatchCount();
+                        
+                            _uiManage
+                                .GetUI<LevelUI>()
+                                .DiceCountText
+                                .SetText(CurrentBatchCount.ToString());
+                        
+                            _uiManage.GetUI<ScoreUI>().Show();
+                        
+                            ServiceLocator.Instance.Get<CameraManager>().ChangeBackgroundColor();
+                        
+                            LevelStateMachine.RequestStateChange(GetSeedState);
+                        });
+                        
+                        return;
+                    }
+                    
                     ServiceLocator.Instance.Get<GridDataManager>().StartChangeNextLevel(() =>
                     {
                         var _uiManage = ServiceLocator.Instance.Get<UIManager>();
@@ -105,6 +135,14 @@ namespace GlobalGameJam
                             .SetLevelText(CurrentLevel)
                             .SetDetailText("Let's start slow")
                             .Show();
+
+                        CurrentBatch      = 0;
+                        CurrentBatchCount = BatchCount();
+                        
+                        _uiManage
+                            .GetUI<LevelUI>()
+                            .DiceCountText
+                            .SetText(CurrentBatchCount.ToString());
                         
                         _uiManage.GetUI<ScoreUI>().Show();
                         
@@ -124,8 +162,10 @@ namespace GlobalGameJam
             LevelStateMachine.AddState(GetSeedState, 
                 new State(onEnter: _state =>
                 {
-                    if(!UIManager.GetUI<SeedSelectionUI>().IsShow)
+                    if (!UIManager.GetUI<SeedSelectionUI>().IsShow)
+                    {
                         UIManager.GetUI<LevelUI>().PressSpaceBarUI.SetActive(true);
+                    }
                     
                     DiceManager.Enable();
                     DiceManager.OnDiceStopRolling += UIManager.GetUI<SeedSelectionUI>().Show;
@@ -164,7 +204,9 @@ namespace GlobalGameJam
                     
                     SeedNode.OnAllPlantGrown -= GoToLevelPassState;
                 }));
+
             
+#region Pass Level
             LevelStateMachine.AddState(LevelPassState, 
                 new State(onEnter: _state =>
                 {
@@ -207,6 +249,7 @@ namespace GlobalGameJam
 
                 }));
             
+  #endregion
             
             LevelStateMachine.AddState(GameOverState, 
                 new State(onEnter: _state =>
@@ -237,12 +280,38 @@ namespace GlobalGameJam
             GoToPlaceSeedState();
         }
 
-        private void OnSeedPlacementHandler()
+        private void OnSeedPlacementHandler(SeedNode _node)
         {
-            StartCoroutine(CheckStopGrow(() =>
+            // StartCoroutine(CheckStopGrow(() =>
+            // {
+            //         
+            //     GoToGetSeedState();
+            // }));
+
+            StartCoroutine(Wait(_node, () =>
             {
+                if (!ServiceLocator.Instance.Get<GridDataManager>().IsAllPlantNodesGrown())
+                {
+                    if (CurrentBatchCount == 0 && DiceManager.IsAllDicesSelected())
+                    {
+                        var _levelUI = UIManager.GetUI<LevelUI>();
+                        
+                        _levelUI.LevelMessage.gameObject.SetActive(true);
+                        _levelUI.RestartLevelButton.gameObject.SetActive(true);
+                        
+                        return;
+                    }
+                }
+                
                 GoToGetSeedState();
             }));
+        }
+
+        private IEnumerator Wait(SeedNode _node, Action _onComplete)
+        {
+            yield return new WaitUntil(() => !_node.Growing);
+            
+            _onComplete?.Invoke();
         }
 
         private IEnumerator CheckStopGrow(Action _onComplete)
