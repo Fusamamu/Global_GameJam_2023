@@ -247,10 +247,10 @@ namespace GlobalGameJam
         {
             bool _stopGrow = false;
             
-            var _allSeeds = FindObjectsOfType<SeedNode>();
-            
             while (!_stopGrow)
             {
+                var _allSeeds = FindObjectsOfType<SeedNode>();
+                
                 foreach (var _seed in _allSeeds)
                 {
                     if (_seed.Growing)
@@ -261,7 +261,7 @@ namespace GlobalGameJam
                     {
                         _stopGrow = true;
                     }
-
+                
                     yield return null;
                 }
             }

@@ -19,6 +19,7 @@ namespace GlobalGameJam
         [SerializeField] private SeedPlacementManager SeedPlacementManager;
         [SerializeField] private PlayerManager        PlayerManager;
         [SerializeField] private LevelManager         LevelManager;
+        [SerializeField] private NodeManager          NodeManager;
 
         private void Start()
         {
@@ -34,6 +35,7 @@ namespace GlobalGameJam
             ServiceLocator.Instance.Register(SeedPlacementManager);
             ServiceLocator.Instance.Register(PlayerManager);
             ServiceLocator.Instance.Register(LevelManager);
+            ServiceLocator.Instance.Register(NodeManager);
             
             ServiceLocator.Instance.Initialized();
         }

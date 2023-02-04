@@ -80,10 +80,11 @@ namespace GlobalGameJam
                 yield return new WaitForSeconds(0.5f);
                 
                 var _newSeedNode = CreateSeedNode(GridPos + Seeds[_index].TargetPos);
-
+                
                 _newSeedNode.PlayFeedback();
                 _index++;
                 
+                ServiceLocator.Instance.Get<NodeManager>().AddActiveNode(_newSeedNode);
                 ServiceLocator.Instance.Get<AudioManager>().GrowingNodeSound.Play();
                 
                 yield return new WaitForSeconds(1);

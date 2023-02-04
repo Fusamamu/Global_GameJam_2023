@@ -92,7 +92,7 @@ namespace GlobalGameJam
             {
                 if (_node.TryGetComponent<PlantNode>(out var _plant))
                 {
-                    if (!_plant.IsGrown)
+                    if (!_plant.Growing)
                         return false;
                 }
             }

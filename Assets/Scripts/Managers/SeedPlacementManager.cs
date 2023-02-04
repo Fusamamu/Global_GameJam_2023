@@ -113,5 +113,10 @@ namespace GlobalGameJam
 				}
 			}
 		}
+
+		private void OnDestroy()
+		{
+			GrabbedSeedNode = null;
+		}
 	}
 }

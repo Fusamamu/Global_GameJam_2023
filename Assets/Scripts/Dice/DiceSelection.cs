@@ -40,6 +40,9 @@ namespace GlobalGameJam
             {
                 if (CurrentFocusDice != null)
                 {
+                    
+                    
+                    
                     ServiceLocator.Instance
                         .Get<SeedPlacementManager>()
                         .Enable()

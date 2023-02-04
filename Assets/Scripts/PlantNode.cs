@@ -9,7 +9,7 @@ namespace GlobalGameJam
     {
         public bool IsInit;
 
-        public bool IsGrown;
+        public bool Growing;
         
         [SerializeField] private SeedNode SeedNodePrefab;
         [SerializeField] private Edge     EdgePrefab;
@@ -28,13 +28,12 @@ namespace GlobalGameJam
 
         public void StartGrow()
         {
+            Growing = true;
             StartCoroutine(Grow());
         }
         
         public IEnumerator Grow()
         {
-            IsGrown = true;
-            
             var _index = 0;
             
             while (_index < Seeds.Count)
@@ -58,6 +57,8 @@ namespace GlobalGameJam
                 
                 yield return new WaitForSeconds(1);
             }
+
+            Growing = false;
         }
         
         

@@ -14,7 +14,6 @@ namespace GlobalGameJam
 		{
 			if(IsInit) return;
 			IsInit = true;
-            
 		}
 		
 	}
