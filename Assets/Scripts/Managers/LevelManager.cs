@@ -93,7 +93,8 @@ namespace GlobalGameJam
                     
                 },onExit: _state =>
                 {
-                    
+                    ServiceLocator.Instance.Get<DataManager>().Score = 0;
+                    UIManager.GetUI<ScoreUI>().SetScore(0);
                 }));
             
             LevelStateMachine.AddState(PlayerState, 
@@ -141,11 +142,14 @@ namespace GlobalGameJam
                         
                         ServiceLocator.Instance.Get<GridDataManager>().StartLevel(CurrentLevel, () =>
                         {
+                            var _currentLevelInfo = LevelInfos[CurrentLevel];
+                            var _levelDetail      = _currentLevelInfo.Detail;
+                            
                             var _uiManage = ServiceLocator.Instance.Get<UIManager>();
                             
                             _uiManage.GetUI<LevelUI>()
                                 .SetLevelText(CurrentLevel)
-                                .SetDetailText("Let's start slow")
+                                .SetDetailText(_levelDetail)
                                 .Show();
 
                             CurrentBatch      = 0;
@@ -218,7 +222,7 @@ namespace GlobalGameJam
 
                 }, onLogic: _state =>
                 {
-                    Debug.Log("Get Seed State");
+                  //  Debug.Log("Get Seed State");
                     
                 },onExit: _state =>
                 {
@@ -239,7 +243,7 @@ namespace GlobalGameJam
                 }, onLogic: _state =>
                 {
                     
-                    Debug.Log("Place Seed State");
+                   // Debug.Log("Place Seed State");
                     
                 },onExit: _state =>
                 {
@@ -310,7 +314,7 @@ namespace GlobalGameJam
                   
                 }));
             
-            if(StartPlayerState)
+            if(StartPlayerState || SceneLoader.IsRestartCurrentLevel)
                 LevelStateMachine.SetStartState(PlayerState);
             else
                 LevelStateMachine.SetStartState(TutorialState);
@@ -447,7 +451,7 @@ namespace GlobalGameJam
             
             yield return new WaitForSeconds(2f);
             
-            _taskUI.Instruction.SetText($"<shake>To do so, place space bar to randomly get a seed</shake>");
+            _taskUI.Instruction.SetText($"<shake>To do so, press [ SPACE BAR ] to randomly get a seed</shake>");
 
             var _diceManager = ServiceLocator.Instance.Get<DiceManager>();
             _diceManager.Enable();
@@ -476,14 +480,14 @@ namespace GlobalGameJam
 
             _seedPlacementManager.Disable();
             
-            _taskUI.Instruction.SetText($"<shake>Now, you have the power of the sun in this palm of your hand! (well technically, it's just a seed..)</shake>");
+            _taskUI.Instruction.SetText($"<shake>Now, you have the power of the sun in the palm of your hand! (well technically, it's just a seed..)</shake>");
             
             _completeUI.Show();
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(3);
             _completeUI.Hide();
             
             yield return new WaitForSeconds(2);
-            _taskUI.Instruction.SetText($"<shake>It's time you start saving the world. Place the seed need to plant base and see them grow.</shake>");
+            _taskUI.Instruction.SetText($"<shake>It's time you start saving the world. Place the seed [NEXT TO PLANT BASE] and see them grow.</shake>");
 
             _seedPlacementManager.Enable();
             

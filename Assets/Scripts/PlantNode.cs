@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
@@ -17,7 +18,67 @@ namespace GlobalGameJam
         [SerializeField] private List<SeedInfo> Seeds = new List<SeedInfo>();
         
         [SerializeField] private MMF_Player OnActive;
+
+        public bool UseForceGrow;
+
+        private void Start()
+        {
+            if (UseForceGrow)
+            {
+
+                StartCoroutine(ForceGrow());
+            }
+        }
         
+        public IEnumerator ForceGrow()
+        {
+            var _index = 0;
+            
+            while (_index < Seeds.Count)
+            {
+                var _newEdge = Instantiate(EdgePrefab, GridPos, Quaternion.identity, GridNodeData.transform);
+
+                _newEdge.Initialized();
+                
+                _newEdge.SetEnd(Seeds[_index].TargetPos);
+                
+                _newEdge.PlayFeedback();
+                
+                yield return new WaitForSeconds(0.5f);
+                
+                var _newSeedNode = ForceCreateSeedNode(GridPos + Seeds[_index].TargetPos);
+
+                _newSeedNode.PlayFeedback();
+                _index++;
+                
+                // ServiceLocator.Instance.Get<DataManager>().IncreaseScore(10);
+                // ServiceLocator.Instance.Get<AudioManager>().GrowingTreeSound.Play();
+                
+                yield return new WaitForSeconds(1);
+            }
+
+            Growing = false;
+        }
+        
+        
+        public SeedNode ForceCreateSeedNode(Vector3Int _targetPos)
+        {
+            var _seedNode = Instantiate(SeedNodePrefab, _targetPos, Quaternion.identity, GridNodeData.transform);
+
+            _seedNode.Initialized();
+            
+            _seedNode
+                .SetGridPos(_targetPos)
+                .SetWorldPos(_targetPos);
+            
+            GridNodeData.AddNode(_seedNode, _targetPos);
+            
+            return _seedNode;
+        }
+        
+        
+        
+
         public void Initialized()
         {
             if(IsInit) return;

@@ -56,5 +56,21 @@ namespace GlobalGameJam
 				}
 			});
 		}
+
+		public void SetDefault()
+		{
+			Bgm.volume = 0.5f;
+			
+			foreach (var _sound in AllSoundEffects)
+			{
+				_sound.volume = 0.5f;
+			}
+			
+			var _menuUI = UIManager.GetUI<MenuUI>();
+
+			_menuUI.BGMSlider.value = 0.5f;
+			_menuUI.SFXSlider.value = 0.5f;
+
+		}
 	}
 }

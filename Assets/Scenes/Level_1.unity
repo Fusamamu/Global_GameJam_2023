@@ -5012,6 +5012,7 @@ MonoBehaviour:
   - TargetPos: {x: -1, y: 2, z: -1}
   - TargetPos: {x: 1, y: 2, z: -1}
   OnActive: {fileID: 880227382}
+  UseForceGrow: 0
 --- !u!4 &213256182
 Transform:
   m_ObjectHideFlags: 0
@@ -17541,6 +17542,7 @@ MonoBehaviour:
   - TargetPos: {x: -1, y: 2, z: -1}
   - TargetPos: {x: 1, y: 2, z: -1}
   OnActive: {fileID: 1987386848}
+  UseForceGrow: 0
 --- !u!4 &638909947
 Transform:
   m_ObjectHideFlags: 0
@@ -31295,7 +31297,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <shake>PICK ABILITIES</shake>
+  m_text: <shake>PICK A SEED</shake>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e2093a5a894441478e5e7f92795c8f2, type: 2}
   m_sharedMaterial: {fileID: 5322155146138020714, guid: 2e2093a5a894441478e5e7f92795c8f2, type: 2}
@@ -44554,6 +44556,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2119008603}
+        m_TargetAssemblyTypeName: GlobalGameJam.AudioManager, Assembly-CSharp
+        m_MethodName: SetDefault
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1638692928
 GameObject:
   m_ObjectHideFlags: 0
@@ -54460,6 +54474,7 @@ MonoBehaviour:
   - TargetPos: {x: -1, y: 2, z: -1}
   - TargetPos: {x: 1, y: 2, z: -1}
   OnActive: {fileID: 319317816}
+  UseForceGrow: 0
 --- !u!4 &2055645263
 Transform:
   m_ObjectHideFlags: 0
