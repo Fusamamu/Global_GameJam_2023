@@ -654,7 +654,7 @@ GameObject:
   - component: {fileID: 188271175492419964}
   - component: {fileID: 188271175492419965}
   m_Layer: 0
-  m_Name: SeedNode_H4_S2
+  m_Name: SeedNode_H4D_S2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -759,15 +759,15 @@ MonoBehaviour:
   <WorldPos>k__BackingField: {x: 0, y: 0, z: 0}
   Block: 2 BLK
   Dir: 4 DIR
-  DGNL: ---
+  DGNL: DGNL
   VERT: ---
   Growing: 0
   IsInit: 0
   SeedNodePrefab: {fileID: 188271175492419965}
   EdgePrefab: {fileID: 7897965213092923287, guid: 87b7c117094d24a65a112cb9699e5b4c, type: 3}
   Seeds:
-  - TargetPos: {x: 0, y: 0, z: 2}
-  - TargetPos: {x: 0, y: 0, z: -2}
-  - TargetPos: {x: 2, y: 0, z: 0}
-  - TargetPos: {x: -2, y: 0, z: 0}
+  - TargetPos: {x: 2, y: 0, z: 2}
+  - TargetPos: {x: -2, y: 0, z: -2}
+  - TargetPos: {x: 2, y: 0, z: -2}
+  - TargetPos: {x: -2, y: 0, z: 2}
   OnActive: {fileID: 188271173618818010}

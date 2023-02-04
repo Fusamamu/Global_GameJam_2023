@@ -757,6 +757,11 @@ MonoBehaviour:
   ParentNode: {fileID: 0}
   <GridPos>k__BackingField: {x: 0, y: 0, z: 0}
   <WorldPos>k__BackingField: {x: 0, y: 0, z: 0}
+  Block: 1 BLK
+  Dir: 4 DIR
+  DGNL: DGNL
+  VERT: ---
+  Growing: 0
   IsInit: 0
   SeedNodePrefab: {fileID: 188271175492419965}
   EdgePrefab: {fileID: 7897965213092923287, guid: 87b7c117094d24a65a112cb9699e5b4c, type: 3}

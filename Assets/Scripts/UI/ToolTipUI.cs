@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace GlobalGameJam
@@ -10,6 +11,8 @@ namespace GlobalGameJam
         [field: SerializeField] public bool IsInit { get; private set; }
         
         [field: SerializeField] public Canvas UICanvas { get; private set; }
+
+        public TextMeshProUGUI ToolTipText;
 
         public RectTransform SomeUI;
 
@@ -36,12 +39,7 @@ namespace GlobalGameJam
         {
             SomeUI.gameObject.SetActive(true);
             
-            // var _mainCamera = CameraManager.DiceCamera;
-            //
-            // var _screenPoint = RectTransformUtility.WorldToScreenPoint(_mainCamera, _dice.transform.position);
-            // RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.GetComponent<RectTransform>(), _screenPoint, _mainCamera, out var _anchorPos);
-            //
-            // SomeUI.anchoredPosition3D = _anchorPos;
+            ToolTipText.SetText(_dice.SeedNodePrefab.SeedInformation);
         }
         
         public void Hide()

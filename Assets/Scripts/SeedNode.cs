@@ -14,6 +14,24 @@ namespace GlobalGameJam
     
     public class SeedNode : GridNode
     {
+        public string SeedInformation {
+            get
+            {
+                return $"{Block}\n{Dir}\n{DGNL}\n{VERT}";
+            }
+        }
+
+        public string Block;
+        public string Dir;
+        public string DGNL;
+        public string VERT;
+        
+        // GROW
+        // 1 BLK
+        // 4 DIR
+        //     DGNL
+        // HORIZ
+        
         public bool Growing;
         
         public bool IsInit;

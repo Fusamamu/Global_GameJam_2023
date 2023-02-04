@@ -875,7 +875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0703e2905beb647ce8ab9cc160ca2b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <NodeType>k__BackingField: 0
+  <NodeType>k__BackingField: 2
   GridNodeData: {fileID: 0}
   ParentNode: {fileID: 0}
   <GridPos>k__BackingField: {x: 2, y: 1, z: 4}
@@ -1955,7 +1955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0703e2905beb647ce8ab9cc160ca2b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <NodeType>k__BackingField: 0
+  <NodeType>k__BackingField: 2
   GridNodeData: {fileID: 0}
   ParentNode: {fileID: 0}
   <GridPos>k__BackingField: {x: 1, y: 1, z: 1}
@@ -4581,7 +4581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0703e2905beb647ce8ab9cc160ca2b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <NodeType>k__BackingField: 0
+  <NodeType>k__BackingField: 2
   GridNodeData: {fileID: 0}
   ParentNode: {fileID: 0}
   <GridPos>k__BackingField: {x: 6, y: 1, z: 3}
@@ -8038,7 +8038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0703e2905beb647ce8ab9cc160ca2b6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <NodeType>k__BackingField: 0
+  <NodeType>k__BackingField: 2
   GridNodeData: {fileID: 0}
   ParentNode: {fileID: 0}
   <GridPos>k__BackingField: {x: 5, y: 1, z: 5}

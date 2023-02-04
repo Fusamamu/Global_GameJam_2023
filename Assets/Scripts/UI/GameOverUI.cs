@@ -1,59 +1,30 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using MoreMountains.Feedbacks;
 using MPUIKIT;
-using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace GlobalGameJam
 {
-	public class LevelUI : MonoBehaviour, IGameUI
+	public class GameOverUI : MonoBehaviour, IGameUI
 	{
 		[field: SerializeField] public bool IsInit { get; private set; }
-
-		public TextMeshProUGUI DiceCountText;
-		
-		public GameObject PressSpaceBarUI;
-
-		public TextMeshProUGUI LevelText;
-		public TextMeshProUGUI DetailText;
-
-		// public TextMeshProUGUI LevelMessage;
-		// public GameObject      RestartLevelButton;
-
-		//public Canvas ExtraInfoCanvas;
-
+        
 		[field: SerializeField] public Canvas UICanvas { get; private set; }
 
-
-		public TurnUIElement TurnUIElement;
+		[SerializeField] private MPImage TransitionImage;
 
 		[SerializeField] private MMF_Player ShowFeedback;
 		[SerializeField] private MMF_Player HideFeedback;
-
-
+        
 		public void Initialized()
 		{
 			if(IsInit) return;
 			IsInit = true;
 			
-			// LevelMessage.gameObject.SetActive(false);
-			// RestartLevelButton.SetActive(false);
-
-			//ExtraInfoCanvas.enabled = false;
-		}
-
-		public LevelUI SetLevelText(int _level)
-		{
-			LevelText.SetText($"<bounce>LEVEL {_level}</bounce>");
-			return this;
-		}
-
-		public LevelUI SetDetailText(string _detail)
-		{
-			DetailText.SetText($"<shake>{_detail}</shake>");
-			return this;
+			ShowFeedback.Initialization();
 		}
 
 		public void Update()
@@ -66,8 +37,6 @@ namespace GlobalGameJam
 			if(ShowFeedback == null) return;
 			ShowFeedback.Direction = MMFeedbacks.Directions.TopToBottom;
 			ShowFeedback.PlayFeedbacks();
-			
-			PressSpaceBarUI.SetActive(true);
 		}
         
 		public void Hide()
@@ -75,8 +44,6 @@ namespace GlobalGameJam
 			if(ShowFeedback == null) return;
 			ShowFeedback.Direction = MMFeedbacks.Directions.BottomToTop;
 			ShowFeedback.PlayFeedbacks();
-			
-			PressSpaceBarUI.SetActive(false);
 		}
 	}
 }

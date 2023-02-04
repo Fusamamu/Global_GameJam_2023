@@ -30,6 +30,9 @@ namespace GlobalGameJam
         public bool Use;
 
         public static int CurrentLevel = 0;
+
+        public bool UseDebugLevel;
+        public int DebugLevel;
         
         public int CurrentBatch;
         public int CurrentBatchCount;
@@ -96,6 +99,42 @@ namespace GlobalGameJam
             LevelStateMachine.AddState(PlayerState, 
                 new State(onEnter: _state =>
                 {
+                    if (UseDebugLevel)
+                    {
+                        CurrentLevel = DebugLevel;
+
+                        UseDebugLevel = false;
+                        
+                        ServiceLocator.Instance.Get<GridDataManager>().StartLevel(CurrentLevel, () =>
+                        {
+                            var _uiManage = ServiceLocator.Instance.Get<UIManager>();
+                            
+                            _uiManage.GetUI<LevelUI>()
+                                .SetLevelText(CurrentLevel)
+                                .SetDetailText("Let's start slow")
+                                .Show();
+
+                            CurrentBatch      = 0;
+                            CurrentBatchCount = BatchCount();
+                        
+                            _uiManage
+                                .GetUI<LevelUI>()
+                                .DiceCountText
+                                .SetText(CurrentBatchCount.ToString());
+                        
+                            _uiManage.GetUI<ScoreUI>().Show();
+                        
+                            ServiceLocator.Instance.Get<CameraManager>().ChangeBackgroundColor();
+                        
+                            LevelStateMachine.RequestStateChange(GetSeedState);
+                        });
+                        
+                        return;
+                        
+                    }
+                    
+                    
+                    
                     if (SceneLoader.IsRestartCurrentLevel)
                     {
                         SceneLoader.IsRestartCurrentLevel = false;
@@ -126,9 +165,11 @@ namespace GlobalGameJam
                         
                         return;
                     }
+                       
                     
                     ServiceLocator.Instance.Get<GridDataManager>().StartChangeNextLevel(() =>
                     {
+                        
                         var _currentLevelInfo = LevelInfos[CurrentLevel];
                         var _levelDetail      = _currentLevelInfo.Detail;
                         
@@ -213,11 +254,10 @@ namespace GlobalGameJam
             LevelStateMachine.AddState(LevelPassState, 
                 new State(onEnter: _state =>
                 {
-                    
-                    
                     var _uiManage = ServiceLocator.Instance.Get<UIManager>();
                         
                     _uiManage.GetUI<LevelUI>().Hide();
+                    _uiManage.GetUI<ScoreUI>().Hide();
 
                     _uiManage
                         .GetUI<TutorialUI>()
@@ -225,10 +265,15 @@ namespace GlobalGameJam
                         .SetText("Congratulation!")
                         .Show();
 
-                    //_uiManage.GetUI<ScoreUI>().Show();
-                    
                     WaitForSeconds(4, () =>
                     {
+                        if (CurrentLevel == LevelInfos.Count - 1)
+                        //if (CurrentLevel == 1)
+                        {
+                            LevelStateMachine.RequestStateChange(GameOverState);
+                            return;
+                        }
+                        
                         LevelStateMachine.RequestStateChange(PlayerState);
                     });
 
@@ -248,8 +293,6 @@ namespace GlobalGameJam
                         .GetUI<TutorialUI>()
                         .CompleteUIElement
                         .Hide();
-
-
                 }));
             
   #endregion
@@ -257,7 +300,7 @@ namespace GlobalGameJam
             LevelStateMachine.AddState(GameOverState, 
                 new State(onEnter: _state =>
                 {
-                   
+                    UIManager.GetUI<GameOverUI>().Show();
 
                 }, onLogic: _state =>
                 {
@@ -297,12 +340,9 @@ namespace GlobalGameJam
                 {
                     if (CurrentBatchCount == 0 && DiceManager.IsAllDicesSelected())
                     {
-                        var _levelUI = UIManager.GetUI<LevelUI>();
+                        var _levelUI = UIManager.GetUI<ExtraInfoUI>();
                         
-                        // _levelUI.LevelMessage.gameObject.SetActive(true);
-                        // _levelUI.RestartLevelButton.gameObject.SetActive(true);
-
-                        _levelUI.ExtraInfoCanvas.enabled = true;
+                        _levelUI.Show();
                         
                         return;
                     }

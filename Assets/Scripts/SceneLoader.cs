@@ -8,6 +8,11 @@ namespace GlobalGameJam
     public class SceneLoader : MonoBehaviour
     {
         public static bool IsRestartCurrentLevel;
+
+        public void GoToStartMenu()
+        {
+            SceneManager.LoadScene("StartMenu");
+        }
         
         public void StartLevel1()
         {
