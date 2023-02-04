@@ -20,5 +20,10 @@ namespace GlobalGameJam
             IsRestartCurrentLevel = true;
             SceneManager.LoadScene("Level_1");
         }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
     }
 }

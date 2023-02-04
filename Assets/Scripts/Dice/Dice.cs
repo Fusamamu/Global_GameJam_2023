@@ -66,7 +66,7 @@ namespace GlobalGameJam
         {
             ColliderController.EnableRigidBody();
             RandomSpin();
-            ColliderController.Rigidbody.AddForce(new Vector3(0, -10, 0), ForceMode.Impulse);
+            ColliderController.Rigidbody.AddForce(new Vector3(0, -40, 0), ForceMode.Impulse);
         }
 
         public void SetPool(IObjectPool<Dice> _pool)

@@ -65,8 +65,6 @@ namespace GlobalGameJam
             if(!IsEnable) return;
 
             LevelManager.CurrentBatchCount--;
-            
-            Debug.Log("Reduce Batch");
 
             ServiceLocator.Instance
                 .Get<UIManager>()
@@ -179,7 +177,7 @@ namespace GlobalGameJam
                 return;
             }
             
-            if (IsAllDicesStopRolling())
+            if (IsAllDicesStopRolling() || RollTimer <= 0)
             {
                 foreach (var _dice in Dices)
                 {

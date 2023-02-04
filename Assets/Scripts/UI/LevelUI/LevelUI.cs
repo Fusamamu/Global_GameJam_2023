@@ -19,9 +19,11 @@ namespace GlobalGameJam
 		public TextMeshProUGUI LevelText;
 		public TextMeshProUGUI DetailText;
 
-		public TextMeshProUGUI LevelMessage;
-		public GameObject      RestartLevelButton;
-        
+		// public TextMeshProUGUI LevelMessage;
+		// public GameObject      RestartLevelButton;
+
+		public Canvas ExtraInfoCanvas;
+
 		[field: SerializeField] public Canvas UICanvas { get; private set; }
 
 
@@ -36,8 +38,10 @@ namespace GlobalGameJam
 			if(IsInit) return;
 			IsInit = true;
 			
-			LevelMessage.gameObject.SetActive(false);
-			RestartLevelButton.SetActive(false);
+			// LevelMessage.gameObject.SetActive(false);
+			// RestartLevelButton.SetActive(false);
+
+			ExtraInfoCanvas.enabled = false;
 		}
 
 		public LevelUI SetLevelText(int _level)

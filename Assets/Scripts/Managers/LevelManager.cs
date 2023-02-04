@@ -103,7 +103,7 @@ namespace GlobalGameJam
                         ServiceLocator.Instance.Get<GridDataManager>().StartLevel(CurrentLevel, () =>
                         {
                             var _uiManage = ServiceLocator.Instance.Get<UIManager>();
-                        
+                            
                             _uiManage.GetUI<LevelUI>()
                                 .SetLevelText(CurrentLevel)
                                 .SetDetailText("Let's start slow")
@@ -129,11 +129,14 @@ namespace GlobalGameJam
                     
                     ServiceLocator.Instance.Get<GridDataManager>().StartChangeNextLevel(() =>
                     {
+                        var _currentLevelInfo = LevelInfos[CurrentLevel];
+                        var _levelDetail      = _currentLevelInfo.Detail;
+                        
                         var _uiManage = ServiceLocator.Instance.Get<UIManager>();
                         
                         _uiManage.GetUI<LevelUI>()
                             .SetLevelText(CurrentLevel)
-                            .SetDetailText("Let's start slow")
+                            .SetDetailText(_levelDetail)
                             .Show();
 
                         CurrentBatch      = 0;
@@ -296,8 +299,10 @@ namespace GlobalGameJam
                     {
                         var _levelUI = UIManager.GetUI<LevelUI>();
                         
-                        _levelUI.LevelMessage.gameObject.SetActive(true);
-                        _levelUI.RestartLevelButton.gameObject.SetActive(true);
+                        // _levelUI.LevelMessage.gameObject.SetActive(true);
+                        // _levelUI.RestartLevelButton.gameObject.SetActive(true);
+
+                        _levelUI.ExtraInfoCanvas.enabled = true;
                         
                         return;
                     }

@@ -64,7 +64,8 @@ namespace GlobalGameJam
 					GridNodeData = ServiceLocator.Instance.Get<GridDataManager>().CurrentGridLevel;
 					
 					GridNodeData.AddNode(GrabbedSeedNode, TargetSeedPlacementPos.AsVec3Int());
-
+					
+					GrabbedSeedNode.transform.SetParent(GridNodeData.transform);
 					GrabbedSeedNode
 						.SetGridNodeData(GridNodeData)
 						.SetGridPos(TargetSeedPlacementPos.AsVec3Int())
