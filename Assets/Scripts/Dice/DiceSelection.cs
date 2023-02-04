@@ -40,7 +40,17 @@ namespace GlobalGameJam
             {
                 if (CurrentFocusDice != null)
                 {
-                    
+                    var _allSeeds = FindObjectsOfType<SeedNode>();
+
+                    foreach (var _seed in _allSeeds)
+                    {
+                        if (_seed.Growing)
+                        {
+                            CurrentFocusDice.OnUnableToSelect();
+                            
+                            return;
+                        }
+                    }
                     
                     
                     ServiceLocator.Instance

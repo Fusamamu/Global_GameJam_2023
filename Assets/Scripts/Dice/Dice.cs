@@ -135,6 +135,15 @@ namespace GlobalGameJam
             ServiceLocator.Instance.Get<AudioManager>().OnDiceSnapToPosSound.Play();
         }
 
+        public void OnUnableToSelect()
+        {
+            ColliderController.DisableCollider();
+            ColliderController.DisableRigidBody();
+            OnFocusFeedback.PlayFeedbacks();
+            
+            ServiceLocator.Instance.Get<AudioManager>().OnDiceUnableToSelectSound.Play();
+        }
+
         public void OnSelected()
         {
             ColliderController.DisableCollider();

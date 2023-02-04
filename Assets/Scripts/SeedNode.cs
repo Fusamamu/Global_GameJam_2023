@@ -63,6 +63,7 @@ namespace GlobalGameJam
 
                             if (ServiceLocator.Instance.Get<GridDataManager>().IsAllPlantNodesGrown())
                             {
+                                ServiceLocator.Instance.Get<AudioManager>().OnClearLevelSound.Play();
                                 OnAllPlantGrown?.Invoke();
                             }
                         }
@@ -82,6 +83,8 @@ namespace GlobalGameJam
                 var _newSeedNode = CreateSeedNode(GridPos + Seeds[_index].TargetPos);
                 
                 _newSeedNode.PlayFeedback();
+                _newSeedNode.Growing = false;
+                
                 _index++;
                 
                 ServiceLocator.Instance.Get<NodeManager>().AddActiveNode(_newSeedNode);

@@ -19,11 +19,14 @@ namespace GlobalGameJam
 		public AudioSource OnDiceRolledSound;
 		public AudioSource OnDiceSnapToPosSound;
 		public AudioSource OnDiceSelectedSound;
+		public AudioSource OnDiceUnableToSelectSound;
 
 		public AudioSource OnCameraRotateSound;
 		public AudioSource OnOpenMenuSound;
 
 		public AudioSource OnDiceFocusSound;
+
+		public AudioSource OnClearLevelSound;
 
 		public List<AudioSource> AllSoundEffects = new List<AudioSource>();
 

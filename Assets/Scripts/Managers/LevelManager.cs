@@ -168,6 +168,8 @@ namespace GlobalGameJam
             LevelStateMachine.AddState(LevelPassState, 
                 new State(onEnter: _state =>
                 {
+                    
+                    
                     var _uiManage = ServiceLocator.Instance.Get<UIManager>();
                         
                     _uiManage.GetUI<LevelUI>().Hide();
@@ -387,6 +389,12 @@ namespace GlobalGameJam
             yield return new WaitForSeconds(5);
 
             LevelStateMachine.RequestStateChange(PlayerState);
+        }
+
+        private void OnDestroy()
+        {
+            SeedNode.OnAllPlantGrown -= GoToLevelPassState;
+            Dice.OnDiceSelected -= OnDiceSelectedHandler;
         }
     }
 }
